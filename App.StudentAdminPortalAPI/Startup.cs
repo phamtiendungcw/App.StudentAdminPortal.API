@@ -11,6 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.StudentAdminPortalAPI.DataModels;
+using App.StudentAdminPortalAPI.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.StudentAdminPortalAPI
 {
@@ -26,12 +29,18 @@ namespace App.StudentAdminPortalAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+            services.AddDbContext<StudentAdminContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("StudentAdminPortalDb")));
+
+            services.AddScoped<IStudentRepository, SqlStudentRepository>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "App.StudentAdminPortalAPI", Version = "v1" });
             });
+
+            services.AddAutoMapper(typeof(Startup).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
