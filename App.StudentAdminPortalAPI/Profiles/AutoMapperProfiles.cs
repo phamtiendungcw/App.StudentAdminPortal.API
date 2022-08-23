@@ -1,8 +1,6 @@
 ﻿using App.StudentAdminPortalAPI.DomainModels;
 using App.StudentAdminPortalAPI.Profiles.AfterMaps;
 using AutoMapper;
-using DataModels = App.StudentAdminPortalAPI.DataModels;
-using DomainModels = App.StudentAdminPortalAPI.DomainModels;
 
 namespace App.StudentAdminPortalAPI.Profiles
 {

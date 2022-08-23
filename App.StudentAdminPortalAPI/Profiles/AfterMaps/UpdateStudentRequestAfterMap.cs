@@ -1,7 +1,5 @@
-﻿using DataModels = App.StudentAdminPortalAPI.DataModels;
-using App.StudentAdminPortalAPI.DomainModels;
+﻿using App.StudentAdminPortalAPI.DomainModels;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace App.StudentAdminPortalAPI.Profiles.AfterMaps
 {

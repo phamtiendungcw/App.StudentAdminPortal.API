@@ -1,5 +1,4 @@
-﻿using App.StudentAdminPortalAPI.DataModels;
-using System;
+﻿using System;
 
 namespace App.StudentAdminPortalAPI.DomainModels
 {

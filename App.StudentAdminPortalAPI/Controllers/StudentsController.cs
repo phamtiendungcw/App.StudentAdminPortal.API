@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using App.StudentAdminPortalAPI.DomainModels;
+﻿using App.StudentAdminPortalAPI.DomainModels;
 using App.StudentAdminPortalAPI.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace App.StudentAdminPortalAPI.Controllers
 {

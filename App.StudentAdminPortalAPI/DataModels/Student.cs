@@ -15,6 +15,7 @@ namespace App.StudentAdminPortalAPI.DataModels
 
         //Navigation Properties
         public Gender Gender { get; set; }
+
         public Address Address { get; set; }
     }
 }
