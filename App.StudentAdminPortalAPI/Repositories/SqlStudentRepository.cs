@@ -8,17 +8,17 @@ namespace App.StudentAdminPortalAPI.Repositories
 {
     public class SqlStudentRepository : IStudentRepository
     {
-        private readonly StudentAdminContext context;
+        private readonly StudentAdminContext _context;
 
         public SqlStudentRepository(StudentAdminContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
         public async Task<Student> AddStudent(Student request)
         {
-            var student = await context.Student.AddAsync(request);
-            await context.SaveChangesAsync();
+            var student = await _context.Student.AddAsync(request);
+            await _context.SaveChangesAsync();
             return student.Entity;
         }
 
@@ -28,8 +28,8 @@ namespace App.StudentAdminPortalAPI.Repositories
 
             if (student != null)
             {
-                context.Student.Remove(student);
-                await context.SaveChangesAsync();
+                _context.Student.Remove(student);
+                await _context.SaveChangesAsync();
                 return student;
             }
 
@@ -38,17 +38,17 @@ namespace App.StudentAdminPortalAPI.Repositories
 
         public async Task<bool> Exits(Guid studentId)
         {
-            return await context.Student.AnyAsync(x => x.Id == studentId);
+            return await _context.Student.AnyAsync(x => x.Id == studentId);
         }
 
         public async Task<List<Gender>> GetGendersAsync()
         {
-            return await context.Gender.ToListAsync();
+            return await _context.Gender.ToListAsync();
         }
 
         public async Task<Student> GetStudentAsync(Guid studentId)
         {
-            return await context.Student
+            return await _context.Student
                                 .Include(nameof(Gender))
                                 .Include(nameof(Address))
                                 .FirstOrDefaultAsync(x => x.Id == studentId);
@@ -56,7 +56,7 @@ namespace App.StudentAdminPortalAPI.Repositories
 
         public async Task<List<Student>> GetStudentsAsync()
         {
-            return await context.Student
+            return await _context.Student
                                 .Include(nameof(Gender))
                                 .Include(nameof(Address))
                                 .ToListAsync();
@@ -76,7 +76,7 @@ namespace App.StudentAdminPortalAPI.Repositories
                 exitingStudent.Address.PhysicalAddress = request.Address.PhysicalAddress;
                 exitingStudent.Address.PostalAddress = request.Address.PostalAddress;
 
-                await context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 return exitingStudent;
             }
 
