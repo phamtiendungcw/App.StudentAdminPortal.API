@@ -1,4 +1,5 @@
 ﻿using App.StudentAdminPortalAPI.DataModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,20 @@ namespace App.StudentAdminPortalAPI.Repositories
                                 .Include(nameof(Gender))
                                 .Include(nameof(Address))
                                 .ToListAsync();
+        }
+
+        public async Task<bool> UpdateProfileImage(Guid studentId, string profileImageUrl)
+        {
+            var student = await GetStudentAsync(studentId);
+            if (student != null)
+            {
+                student.ProfileImageUrl = profileImageUrl;
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<Student> UpdateStudent(Guid studentId, Student request)

@@ -1,4 +1,5 @@
 ﻿using App.StudentAdminPortalAPI.DataModels;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,5 +15,6 @@ namespace App.StudentAdminPortalAPI.Repositories
         Task<Student> UpdateStudent(Guid studentId, Student request);
         Task<Student> DeleteStudent(Guid studentId);
         Task<Student> AddStudent(Student request);
+        Task<bool> UpdateProfileImage(Guid studentId, string profileImageUrl);
     }
 }
