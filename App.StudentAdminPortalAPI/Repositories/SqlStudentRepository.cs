@@ -1,5 +1,4 @@
 ﻿using App.StudentAdminPortalAPI.DataModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,7 +32,6 @@ namespace App.StudentAdminPortalAPI.Repositories
                 await _context.SaveChangesAsync();
                 return student;
             }
-
             return null;
         }
 
@@ -70,10 +68,8 @@ namespace App.StudentAdminPortalAPI.Repositories
             {
                 student.ProfileImageUrl = profileImageUrl;
                 await _context.SaveChangesAsync();
-
                 return true;
             }
-
             return false;
         }
 
@@ -90,11 +86,9 @@ namespace App.StudentAdminPortalAPI.Repositories
                 exitingStudent.GenderId = request.GenderId;
                 exitingStudent.Address.PhysicalAddress = request.Address.PhysicalAddress;
                 exitingStudent.Address.PostalAddress = request.Address.PostalAddress;
-
                 await _context.SaveChangesAsync();
                 return exitingStudent;
             }
-
             return null;
         }
     }

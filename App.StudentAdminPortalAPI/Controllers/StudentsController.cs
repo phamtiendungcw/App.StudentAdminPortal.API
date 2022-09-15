@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace App.StudentAdminPortalAPI.Controllers
@@ -31,7 +30,6 @@ namespace App.StudentAdminPortalAPI.Controllers
         {
             // Get students
             var students = await _studentRepository.GetStudentsAsync();
-
             return Ok(_mapper.Map<List<Student>>(students));
         }
 
@@ -45,7 +43,6 @@ namespace App.StudentAdminPortalAPI.Controllers
             // Return Student
             if (student == null)
                 return NotFound();
-
             return Ok(_mapper.Map<Student>(student));
         }
 
@@ -60,7 +57,6 @@ namespace App.StudentAdminPortalAPI.Controllers
                 if (updateStudent != null)
                     return Ok(_mapper.Map<Student>(updateStudent));
             }
-
             return NotFound();
         }
 
@@ -74,7 +70,6 @@ namespace App.StudentAdminPortalAPI.Controllers
                 var student = await _studentRepository.DeleteStudent(studentId);
                 return Ok(_mapper.Map<Student>(student));
             }
-
             return NotFound();
         }
 
@@ -86,25 +81,41 @@ namespace App.StudentAdminPortalAPI.Controllers
             return CreatedAtAction(nameof(GetStudentAsync), new { studentId = student.Id }, _mapper.Map<Student>(student));
         }
 
-
         [HttpPost]
-        [Route("[controller]/{studentId:guid}/upload-image")]
+        [Route("[controller]/{studentId:guid}/Upload-Image")]
         public async Task<IActionResult> UploadImage([FromRoute] Guid studentId, IFormFile profileImage)
         {
-            // Check if student exists
-            if (await _studentRepository.Exits(studentId))
+            var validExtensions = new List<string>()
             {
-                // Upload the Image to local storage
-                var fileName = Guid.NewGuid() + Path.GetExtension(profileImage.FileName);
-                var fileImagePath = await _imageRepository.Upload(profileImage, fileName);
+                "jpeg",
+                "png",
+                "gif",
+                "jpg"
+            };
 
-                // Update the profile image path in database
-                if (await _studentRepository.UpdateProfileImage(studentId, fileImagePath))
+            // Check count images
+            if (profileImage != null && profileImage.Length > 0)
+            {
+                var extension = Path.GetExtension(profileImage.FileName);
+                if (validExtensions.Contains(extension))
                 {
-                    return Ok(fileImagePath);
+                    // Check if student exists
+                    if (await _studentRepository.Exits(studentId))
+                    {
+                        // Upload the Image to local storage
+                        var fileName = Guid.NewGuid() + Path.GetExtension(profileImage.FileName);
+                        var fileImagePath = await _imageRepository.Upload(profileImage, fileName);
+
+                        // Update the profile image path in database
+                        if (await _studentRepository.UpdateProfileImage(studentId, fileImagePath))
+                        {
+                            return Ok(fileImagePath);
+                        }
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Xảy ra sự cố khi tải ảnh lên!");
+                    }
                 }
 
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error uploading image");
+                return BadRequest("Không phải là một giá trị định dạng hình ảnh");
             }
 
             return NotFound();

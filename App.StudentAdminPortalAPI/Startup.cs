@@ -1,5 +1,7 @@
 using App.StudentAdminPortalAPI.DataModels;
 using App.StudentAdminPortalAPI.Repositories;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +11,6 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.IO;
-
 namespace App.StudentAdminPortalAPI
 {
     public class Startup
@@ -36,6 +37,9 @@ namespace App.StudentAdminPortalAPI
             });
 
             services.AddControllers();
+
+            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+
             services.AddDbContext<StudentAdminContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StudentAdminPortalDb")));
 
             services.AddScoped<IStudentRepository, SqlStudentRepository>();
