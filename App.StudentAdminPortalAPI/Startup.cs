@@ -1,6 +1,5 @@
 using App.StudentAdminPortalAPI.DataModels;
 using App.StudentAdminPortalAPI.Repositories;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,7 +46,17 @@ namespace App.StudentAdminPortalAPI
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "App.StudentAdminPortalAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "App.StudentAdminPortalAPI",
+                    Description = "A simple ASP.NET Core web API",
+                    Version = "v1",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "DungCW",
+                        Email = "dungkbkbhn@gmail.com"
+                    }
+                });
             });
 
             services.AddAutoMapper(typeof(Startup).Assembly);

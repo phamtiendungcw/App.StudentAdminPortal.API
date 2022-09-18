@@ -13,15 +13,36 @@ namespace App.StudentAdminPortalAPI.Controllers
     [ApiController]
     public class StudentsController : Controller
     {
-        private readonly IStudentRepository _studentRepository;
-        private readonly IMapper _mapper;
         private readonly IImageRepository _imageRepository;
+        private readonly IMapper _mapper;
+        private readonly IStudentRepository _studentRepository;
 
         public StudentsController(IStudentRepository studentRepository, IMapper mapper, IImageRepository imageRepository)
         {
             _studentRepository = studentRepository;
             _mapper = mapper;
             _imageRepository = imageRepository;
+        }
+
+        [HttpPost]
+        [Route("[controller]/Add")]
+        public async Task<IActionResult> AddStudentAsync([FromBody] AddStudentRequest request)
+        {
+            var student = await _studentRepository.AddStudent(_mapper.Map<DataModels.Student>(request));
+            return CreatedAtAction(nameof(GetStudentAsync), new { studentId = student.Id }, _mapper.Map<Student>(student));
+        }
+
+        [HttpDelete]
+        [Route("[controller]/Delete/{studentId:guid}")]
+        public async Task<ActionResult> DeleteStudentAsync([FromRoute] Guid studentId)
+        {
+            if (await _studentRepository.Exits(studentId))
+            {
+                // Delete th student
+                var student = await _studentRepository.DeleteStudent(studentId);
+                return Ok(_mapper.Map<Student>(student));
+            }
+            return NotFound();
         }
 
         [HttpGet]
@@ -58,27 +79,6 @@ namespace App.StudentAdminPortalAPI.Controllers
                     return Ok(_mapper.Map<Student>(updateStudent));
             }
             return NotFound();
-        }
-
-        [HttpDelete]
-        [Route("[controller]/Delete/{studentId:guid}")]
-        public async Task<ActionResult> DeleteStudentAsync([FromRoute] Guid studentId)
-        {
-            if (await _studentRepository.Exits(studentId))
-            {
-                // Delete th student
-                var student = await _studentRepository.DeleteStudent(studentId);
-                return Ok(_mapper.Map<Student>(student));
-            }
-            return NotFound();
-        }
-
-        [HttpPost]
-        [Route("[controller]/Add")]
-        public async Task<IActionResult> AddStudentAsync([FromBody] AddStudentRequest request)
-        {
-            var student = await _studentRepository.AddStudent(_mapper.Map<DataModels.Student>(request));
-            return CreatedAtAction(nameof(GetStudentAsync), new { studentId = student.Id }, _mapper.Map<Student>(student));
         }
 
         [HttpPost]
