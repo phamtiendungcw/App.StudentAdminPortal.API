@@ -87,10 +87,10 @@ namespace App.StudentAdminPortalAPI.Controllers
         {
             var validExtensions = new List<string>()
             {
-                "jpeg",
-                "jpg",
-                "png",
-                "gif"
+                ".jpeg",
+                ".jpg",
+                ".png",
+                ".gif"
             };
 
             // Check count images
